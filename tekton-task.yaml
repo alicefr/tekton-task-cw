@@ -7,7 +7,7 @@ spec:
     - name: encrypt-image
       image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/tekton-encrypt-images:latest
       command:
-        - echo
+        - /entrypoint.sh
       args:
         - fedora:latest
         - final-encrypted-image
