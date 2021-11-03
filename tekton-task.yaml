@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: encrypt-image
+spec:
+  steps:
+    - name: encrypt-image
+      image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/tekton-encrypt-images:latest
+      command:
+        - echo
+      args:
+        - fedora:latest
+        - final-encrypted-image
