@@ -4,8 +4,10 @@ set -x
 export KUBECONFIG=~/.crc/machines/crc/kubeconfig
 LOCAL_IMAGE=localhost/image-tekton-encrypt:latest
 IS=tekton-encrypt-images
+IS_INSECURE_PROJECT=insecure
 NS=encrypt-image-demo
 SA=tekton-encryp-images
+INSECURE_NS=insecure-demo
 # Push into the local registry
 oc login -u kubeadmin -p $(cat ~/.crc/machines/crc/kubeadmin-password) https://api.crc.testing:6443
 oc patch configs.imageregistry.operator.openshift.io/cluster --patch '{"spec":{"defaultRoute":true}}' --type=merge
@@ -17,6 +19,8 @@ podman tag $LOCAL_IMAGE $IMAGE
 podman push --tls-verify=false $IMAGE
 
 # Create the tekton task
+oc new-prject $INSECURE_NS
+oc create imagestream $IS_INSECURE_PROJECT
 oc new-project $NS
 
 # Create sa for tekton task
