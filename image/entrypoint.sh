@@ -2,6 +2,7 @@
 
 IMAGE=$1
 ENCRYPT_IMAGE=$2
+PASSWORD=$3
 
 OUTPUT=disk.img
 CONT=temporary-container
@@ -17,9 +18,12 @@ buildah from --name $CONT $IMAGE
 dir=$(buildah mount $CONT)
 cd $dir
 find . | cpio -o -c -R root:root | gzip -9 >  $DISK
+# encrypt the image with the LUKS passphrase
+DEVICE=$(losetup  -f  --show $DISK)
+echo "YES" | echo "$PASSWORD" | cryptsetup -y -v --type luks2 luksFormat $DEVICE
+losetup -d $DEVICE
 buildah rm $CONT
 
-# TODO encrypt the image with the LUKS passphrase
 
 # TODO generate fake entrypoint
 
