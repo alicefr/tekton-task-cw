@@ -14,9 +14,11 @@ spec:
       type: string
     - name: reg-password
       type: string
+    - name: registry
+      default: image-registry.openshift-image-registry.svc:5000
   steps:
     - name: encrypt-image
-      image: image-registry.openshift-image-registry.svc:5000/encrypt-image-demo/tekton-encrypt-images:latest
+      image: "$(params.registry)/encrypt-image-demo/tekton-encrypt-images:latest"
       command:
         - /entrypoint.sh
       args:
@@ -31,7 +33,7 @@ spec:
           mountPath: /var/lib/containers
     - name: push-image
       image: quay.io/buildah/stable
-      command: ["sh", "-c", "buildah login -u $(params.user) -p $(params.reg-password) --tls-verify=false image-registry.openshift-image-registry.svc:5000 && buildah images && buildah tag localhost/$(params.output-image) image-registry.openshift-image-registry.svc:5000/encrypt-image-demo/$(params.output-image) && buildah push --tls-verify=false image-registry.openshift-image-registry.svc:5000/encrypt-image-demo/$(params.output-image)"]
+      command: ["sh", "-c", "buildah login -u $(params.user) -p $(params.reg-password) --tls-verify=false $(params.registry) && buildah images && buildah tag localhost/$(params.output-image) $(params.registry)/$(params.output-image) && buildah push --tls-verify=false $(params.registry)/$(params.output-image)"]
       volumeMounts:
         - name: varlibc
           mountPath: /var/lib/containers

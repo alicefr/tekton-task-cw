@@ -19,8 +19,9 @@ podman tag $LOCAL_IMAGE $IMAGE
 podman push --tls-verify=false $IMAGE
 
 # Create the tekton task
-oc new-prject $INSECURE_NS
+oc new-project $INSECURE_NS
 oc create imagestream $IS_INSECURE_PROJECT
+
 oc new-project $NS
 
 # Create sa for tekton task
@@ -32,7 +33,8 @@ oc adm policy add-scc-to-user scc-admin-demo  system:serviceaccount:$NS:$SA
 oc apply -f ../tekton-task.yaml
 # Run the tekton task
 tkn task  start encrypt-image -p input-image=fedora:latest \
-	-p output-image="encrypt-image:latest" \
-	-p password=myamazingpassword -p user=kubeadmin -p reg-password=$(oc whoami -t)  -s $SA \
-	--use-taskrun demo-task-encryp-image
+	-p output-image="$INSECURE_NS/encrypt-image:latest" \
+	--use-param-defaults \
+	-p password=myamazingpassword \
+	-p user=kubeadmin -p reg-password=$(oc whoami -t)  -s $SA
 
