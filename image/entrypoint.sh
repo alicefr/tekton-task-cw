@@ -7,7 +7,7 @@ PASSWORD=$3
 OUTPUT=disk.img
 CONT=temporary-container
 OUTDIR=/tmp/output
-DISK=$OUTDIR/disk.img
+DISK=$OUTDIR/$OUTPUT
 
 buildah rm $CONT
 
