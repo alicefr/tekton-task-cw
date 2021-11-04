@@ -5,7 +5,7 @@ metadata:
 spec:
   steps:
     - name: encrypt-image
-      image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/tekton-encrypt-images:latest
+      image: image-registry.openshift-image-registry.svc:5000/encrypt-image-demo/tekton-encrypt-images:latest
       command:
         - /entrypoint.sh
       args:
