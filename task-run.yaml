@@ -3,5 +3,13 @@ kind: TaskRun
 metadata:
   name: encrypt-image-run
 spec:
+  serviceAccountName: tekton-encryp-images
   taskRef:
     name: encrypt-image
+  params:
+    - name: input-image
+      value: fedora:latest
+    - name: output-image
+      value: "encrypt:latest"
+    - name: password
+      value: myamazingpassword

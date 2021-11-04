@@ -3,11 +3,28 @@ kind: Task
 metadata:
   name: encrypt-image
 spec:
+  params:
+    - name: input-image
+      type: string
+    - name: output-image
+      type: string
+    - name: password
+      type: string
   steps:
     - name: encrypt-image
       image: image-registry.openshift-image-registry.svc:5000/encrypt-image-demo/tekton-encrypt-images:latest
       command:
         - /entrypoint.sh
       args:
-        - fedora:latest
-        - final-encrypted-image
+        - '$(params.input-image)'
+        - '$(params.output-image)'
+        - '$(params.password)'
+      securityContext:
+        privileged: true
+        runAsUser: 0
+      volumeMounts:
+        - name: varlibc
+          mountPath: /var/lib/containers
+  volumes:
+  - name: varlibc
+    emptyDir: {}
