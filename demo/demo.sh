@@ -31,5 +31,8 @@ oc adm policy add-scc-to-user scc-admin-demo  system:serviceaccount:$NS:$SA
 
 oc apply -f ../tekton-task.yaml
 # Run the tekton task
-oc apply -f ../task-run.yaml
+tkn task  start encrypt-image -p input-image=fedora:latest \
+	-p output-image="encrypt-image:latest" \
+	-p password=myamazingpassword -p user=kubeadmin -p reg-password=$(oc whoami -t)  -s $SA \
+	--use-taskrun demo-task-encryp-image
 
