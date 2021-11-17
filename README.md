@@ -1,4 +1,4 @@
-# Create encrypted image for Confidential workloads
+# Create encrypted images for Confidential workloads
 
 ## Build
 ```
@@ -28,7 +28,7 @@ In order to run the demo you need to:
 
 If you already have an OCP cluster you need to adjust the KUBECONFIG path to point the correct one.
 
-The demo create a tekton task that pull a container image, it transform it in an ecrypted image and push it in the internal registry and create an image stream to make the image available to the insecure namespace.
+The demo creates a tekton task that pulls a container image, it transforms it in an ecrypted image and pushes it in the internal registry.
 ```bash
 $ cd demo
 $ ./demo.sh
