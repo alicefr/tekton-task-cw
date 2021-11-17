@@ -2,7 +2,8 @@
 
 ## Build
 ```
-$ podman build -t image-tekton-encrypt -f image/Dockerfile .
+$ cd image
+$ podman build -t image-tekton-encrypt .
 ```
 
 ## RUN
